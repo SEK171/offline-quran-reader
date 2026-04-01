@@ -5,7 +5,7 @@
     <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE"/>
 
     <application
-        android:label="dad_quran_app"
+        android:label="Quran Offline"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
         android:requestLegacyExternalStorage="true"  android:enableOnBackInvokedCallback="true">
