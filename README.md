@@ -30,7 +30,8 @@ If you want to compile the app yourself:
 4. Run `flutter build apk` to generate the Android installation file.
 
 ## For Developers: Data & Audio Sources
-The complete, hand-calibrated JSON file (`quran_with_timings.json`) is included in the `assets/json/` folder of this repository. Feel free to use it for your own projects!
+* **Original Data Source:** The base Quranic text and structure was sourced from [quran-json by risan](https://github.com/risan/quran-json).
+* **Calibrated Data:** The complete, hand-calibrated JSON file (`quran_with_timings.json`) is included in the `assets/json/` folder of this repository.
 
 If you want to fetch the exact audio files directly from the source server (mp3quran.net) instead of using the Archive.org link, here is the Python script used to grab the Mishary Alafasy files:
 
