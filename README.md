@@ -11,7 +11,13 @@ This app was originally built as a personal project for my father and is now rel
 * **Smart Resume:** Automatically remembers exactly where you left off globally and per Surah. *(Long press a Surah to restart it from the beginning).*
 * **Customizable UI:** Adjustable font sizes and a reading highlighter for following along easily.
 
-## How to Setup the Audio (Important!)
+## Getting the app (No Coding Required)
+If you just want to use the app without building it from source:
+1. **Download the APK:** Go to the [Releases]([LINK_TO_YOUR_GITHUB_RELEASES_PAGE]) page and download the latest `app-release.apk`.
+2. **Install:** Open the file on your Android device (you may need to allow "Install from Unknown Sources").
+3. **Audio Setup:** Follow the [Audio Setup](#-how-to-setup-the-audio-important) steps below to get the recitation files.
+
+## How to Setup the Audio
 To keep this app completely offline and the download size small, the heavy audio files are not bundled inside the app. **You must download them once to your phone.**
 
 >  **CRITICAL:** The verse-by-verse text highlighting timings (`quran_with_timings.json` included in this repository) were calibrated completely by hand specifically for the recitation of **Sheikh Mishary Rashid Alafasy**. You *must* use his audio files, otherwise the text highlighting will be out of sync.
