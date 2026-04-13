@@ -23,7 +23,7 @@ To keep this app completely offline and the download size small, the heavy audio
 >  **CRITICAL:** The verse-by-verse text highlighting timings (`quran_with_timings.json` included in this repository) were calibrated completely by hand specifically for the recitation of **Sheikh Mishary Rashid Alafasy**. You *must* use his audio files, otherwise the text highlighting will be out of sync.
 
 **Follow these steps:**
-1. **Download the Files:** * **Audio:** Download the recitation `.zip` [here]([LINK_TO_ARCHIVE_ORG_AUDIO]).
+1. **Download the Files:** * **Audio:** Download the recitation `.zip` [here](https://archive.org/details/2_20260413_20260413_1010).
    * **App (Optional):** You can also find the ready-made APK [here]([LINK_TO_ARCHIVE_ORG_APK]) if you prefer not to use GitHub.
 2. **Extract the Files:** Unzip the downloaded file on your phone. You should now have a folder containing 114 `.mp3` files (one for each Surah).
 3. **Link to the App:** Open the app. It will ask you "Where are the audio files?". Click "Select Folder", grant storage permission, and select the folder you just unzipped. 
