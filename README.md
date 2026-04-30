@@ -29,12 +29,6 @@ To keep this app completely offline and the download size small, the heavy audio
 3. **Link to the App:** Open the app. It will ask you "Where are the audio files?". Click "Select Folder", grant storage permission, and select the folder you just unzipped. 
 *(Alternatively, long-press the Title Bar inside the app later to reset the folder and go through these steps again).*
 
-
-## License
-
-This project is licensed under the [MIT License](LICENSE). You are free to use, modify, and share this project with proper attribution.
-
-
 ## Building from Source
 If you want to compile the app yourself:
 1. Ensure you have [Flutter](https://flutter.dev/docs/get-started/install) installed.
