@@ -15,7 +15,7 @@ This app was originally built as a personal project for my father and is now rel
 If you just want to use the app without building it from source:
 1. **Download the APK:** Go to the [Releases]([LINK_TO_YOUR_GITHUB_RELEASES_PAGE]) page and download the latest `app-release.apk`.
 2. **Install:** Open the file on your Android device (you may need to allow "Install from Unknown Sources").
-3. **Audio Setup:** Follow the [Audio Setup](#-how-to-setup-the-audio-important) steps below to get the recitation files.
+3. **Audio Setup:** Follow the Audio Setup steps below to get the recitation files.
 
 ## How to Setup the Audio
 To keep this app completely offline and the download size small, the heavy audio files are not bundled inside the app. **You must download them once to your phone.**
@@ -28,6 +28,12 @@ To keep this app completely offline and the download size small, the heavy audio
 2. **Extract the Files:** Unzip the downloaded file on your phone. You should now have a folder containing 114 `.mp3` files (one for each Surah).
 3. **Link to the App:** Open the app. It will ask you "Where are the audio files?". Click "Select Folder", grant storage permission, and select the folder you just unzipped. 
 *(Alternatively, long-press the Title Bar inside the app later to reset the folder and go through these steps again).*
+
+
+## License
+
+This project is licensed under the [MIT License](LICENSE). You are free to use, modify, and share this project with proper attribution.
+
 
 ## Building from Source
 If you want to compile the app yourself:
