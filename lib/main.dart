@@ -7,7 +7,11 @@ import 'package:permission_handler/permission_handler.dart';
 import 'models/surah_model.dart';
 import 'reading_screen.dart';
 
+// This acts as a global radio broadcaster for the theme color
+final ValueNotifier<Color> appThemeColor = ValueNotifier(const Color(0xFF1B5E20));
+
 void main() {
+  // Boot instantly! No waiting, no crashing.
   runApp(const QuranApp());
 }
 
@@ -16,15 +20,22 @@ class QuranApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF1B5E20)),
-        scaffoldBackgroundColor: const Color(0xFFFAFAFA),
-        useMaterial3: true,
-        fontFamily: "Traditional Arabic",
-      ),
-      home: const HomeScreen(),
+    // ValueListenableBuilder listens to the radio broadcaster. 
+    // If the color changes, it redraws the MaterialApp seamlessly.
+    return ValueListenableBuilder<Color>(
+      valueListenable: appThemeColor,
+      builder: (context, color, child) {
+        return MaterialApp(
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData(
+            colorScheme: ColorScheme.fromSeed(seedColor: color),
+            scaffoldBackgroundColor: const Color(0xFFFAFAFA),
+            useMaterial3: true,
+            fontFamily: "Traditional Arabic",
+          ),
+          home: const HomeScreen(),
+        );
+      },
     );
   }
 }
@@ -39,18 +50,31 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateMixin {
   List<Surah> allSurahs = [];
   List<dynamic> allJuz = [];
-  List<dynamic> allHizb = []; // NEW: Hizb Data
+  List<dynamic> allHizb = []; 
   String? audioBasePath;
   bool isLoading = true;
   int? lastReadSurahId;
   
-  // Update TabController length to 3
   late TabController _tabController;
+
+  // The expanded elegant color palette
+  final List<Color> _themeOptions = [
+    const Color(0xFF1B5E20), // Classic Green
+    const Color(0xFF004D40), // Dark Teal
+    const Color(0xFF0D47A1), // Deep Blue
+    const Color(0xFF4A148C), // Royal Purple
+    const Color(0xFFB71C1C), // Deep Red
+    const Color(0xFFE65100), // Burnt Orange / Amber
+    const Color(0xFFF57F17), // Deep Yellow / Gold
+    const Color(0xFF4E342E), // Warm Brown
+    const Color(0xFF37474F), // Blue Grey
+    const Color(0xFF212121), // Charcoal Black
+  ];
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 3, vsync: this); // CHANGED TO 3
+    _tabController = TabController(length: 3, vsync: this); 
     _initApp();
   }
 
@@ -58,12 +82,16 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     final prefs = await SharedPreferences.getInstance();
     final savedPath = prefs.getString('audio_path');
     final savedSurahId = prefs.getInt('global_last_surah_id');
+    
+    // Check for saved color in the background
+    final savedColorValue = prefs.getInt('theme_color');
+    if (savedColorValue != null) {
+      appThemeColor.value = Color(savedColorValue);
+    }
 
-    // 1. Load Surahs
     final String surahResponse = await rootBundle.loadString('assets/json/quran.json'); 
     final List<dynamic> surahData = json.decode(surahResponse);
     
-    // 2. Load Juz Data
     String juzResponse = "[]";
     try {
       juzResponse = await rootBundle.loadString('assets/json/juz_data.json');
@@ -71,7 +99,6 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       print("⚠️ Error loading Juz data: $e");
     }
     
-    // 3. Load Hizb Data (NEW)
     String hizbResponse = "[]";
     try {
       hizbResponse = await rootBundle.loadString('assets/json/hizb_data.json');
@@ -83,10 +110,59 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       audioBasePath = savedPath;
       allSurahs = surahData.map((json) => Surah.fromJson(json)).toList();
       allJuz = json.decode(juzResponse);
-      allHizb = json.decode(hizbResponse); // Load the JSON
+      allHizb = json.decode(hizbResponse); 
       lastReadSurahId = savedSurahId;
       isLoading = false;
     });
+  }
+
+  void _updateThemeColor(Color newColor) async {
+    appThemeColor.value = newColor; // Broadcast the new color instantly
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setInt('theme_color', newColor.value); // Save it for next time
+  }
+
+  void _showColorPicker() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text("Choose Theme Color", textAlign: TextAlign.center),
+          content: Wrap(
+            alignment: WrapAlignment.center,
+            spacing: 12,
+            runSpacing: 12,
+            children: _themeOptions.map((color) {
+              final isSelected = color.value == appThemeColor.value.value;
+              return GestureDetector(
+                onTap: () {
+                  _updateThemeColor(color);
+                  Navigator.pop(context);
+                },
+                child: Container(
+                  width: 50,
+                  height: 50,
+                  decoration: BoxDecoration(
+                    color: color,
+                    shape: BoxShape.circle,
+                    border: isSelected 
+                        ? Border.all(color: Colors.black, width: 3) 
+                        : null,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.2),
+                        blurRadius: 4,
+                        offset: const Offset(2, 2),
+                      )
+                    ],
+                  ),
+                ),
+              );
+            }).toList(),
+          ),
+        );
+      }
+    );
   }
 
   Future<void> _openSurah(int surahId, {int startVerseId = 0, bool forceRestart = false}) async {
@@ -202,13 +278,20 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
         ),
         centerTitle: true,
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.color_lens),
+            tooltip: 'Change Theme',
+            onPressed: _showColorPicker,
+          ),
+        ],
         bottom: TabBar(
           controller: _tabController,
           labelStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
           tabs: const [
             Tab(text: "Surahs"),
             Tab(text: "Juz'"),
-            Tab(text: "Hizb"), // NEW TAB
+            Tab(text: "Hizb"),
           ],
         ),
       ),
@@ -216,9 +299,9 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
         children: [
           if (lastReadSurahId != null)
              Container(
-               color: Colors.green[50],
+               color: appThemeColor.value.withOpacity(0.1),
                child: ListTile(
-                 leading: const Icon(Icons.history, color: Colors.green),
+                 leading: Icon(Icons.history, color: appThemeColor.value),
                  title: const Text("Continue Reading"),
                  subtitle: Text("Surah ${allSurahs[lastReadSurahId! - 1].englishName}"),
                  trailing: const Icon(Icons.arrow_forward_ios, size: 16),
@@ -239,7 +322,11 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                    itemBuilder: (context, index) {
                      final surah = allSurahs[index];
                      return ListTile(
-                       leading: CircleAvatar(child: Text("${surah.id}")),
+                       leading: CircleAvatar(
+                         backgroundColor: appThemeColor.value,
+                         foregroundColor: Colors.white,
+                         child: Text("${surah.id}")
+                       ),
                        title: Text(
                          surah.arabicName,
                          style: const TextStyle(fontSize: 22, fontFamily: "Traditional Arabic"),
@@ -296,7 +383,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                    },
                  ),
 
-                 // --- TAB 3: HIZB (NEW) ---
+                 // --- TAB 3: HIZB ---
                  ListView.separated(
                    itemCount: allHizb.length,
                    separatorBuilder: (context, index) => const Divider(height: 1),
@@ -304,7 +391,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                      final hizb = allHizb[index];
                      return ListTile(
                        leading: CircleAvatar(
-                         backgroundColor: Colors.blue[800], // Blue for Hizb
+                         backgroundColor: Colors.blue[800], 
                          foregroundColor: Colors.white,
                          child: Text("${hizb['id']}"),
                        ),
@@ -321,6 +408,20 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                    },
                  ),
                ],
+             ),
+           ),
+           
+           // --- DEVELOPER CREDITS ---
+           Padding(
+             padding: const EdgeInsets.symmetric(vertical: 12.0),
+             child: Text(
+               "Developed by Salah Eddine Kourradi",
+               style: TextStyle(
+                 color: Colors.grey.shade600,
+                 fontSize: 12,
+                 fontWeight: FontWeight.w500,
+                 letterSpacing: 0.5,
+               ),
              ),
            ),
         ],
