@@ -9,18 +9,18 @@ This app was originally built as a personal project for my father and is now rel
 * **Precise Audio Sync:** The text highlights perfectly in sync with the audio, calibrated verse-by-verse by hand.
 * **Multiple Reading Modes:** Navigate by Surah, Juz' (Parts), or Hizb (Groups) based on your reading habits.
 * **Smart Resume:** Automatically remembers exactly where you left off globally and per Surah. *(Long press a Surah to restart it from the beginning).*
-* **Customizable UI:** Adjustable font sizes and a reading highlighter for following along easily.
+* **Customizable UI:** Adjustable font size and color, along with a reading highlighter for following along easily.
 
 ## Getting the app (No Coding Required)
 If you just want to use the app without building it from source:
-1. **Download the APK:** Go to the [Releases](https://github.com/SEK171/offline-quran-reader/releases/latest) page and download the latest `app-release.apk`.
+1. **Download the APK:** Go to the [Releases](https://github.com/SEK171/offline-quran-reader/releases/latest) page and download the latest apk from the assets.
 2. **Install:** Open the file on your Android device (you may need to allow "Install from Unknown Sources").
 3. **Audio Setup:** Follow the Audio Setup steps below to get the recitation files.
 
 ## How to Setup the Audio
 To keep this app completely offline and the download size small, the heavy audio files are not bundled inside the app. **You must download them once to your phone.**
 
->  **CRITICAL:** The verse-by-verse text highlighting timings (`quran_with_timings.json` included in this repository) were calibrated completely by hand specifically for the recitation of **Sheikh Mishary Rashid Alafasy**. You *must* use his audio files, otherwise the text highlighting will be out of sync.
+>  **CRITICAL:** The verse-by-verse text highlighting timings (`quran.json` included in this repository) were calibrated completely by hand specifically for the recitation of **Sheikh Mishary Rashid Alafasy**. You *must* use his audio files, otherwise the text highlighting will be out of sync.
 
 **Follow these steps:**
 1. **Download the Files:**
@@ -35,7 +35,9 @@ If you want to compile the app yourself:
 1. Ensure you have [Flutter](https://flutter.dev/docs/get-started/install) installed.
 2. Clone this repository.
 3. Run `flutter pub get` to install dependencies.
-4. Run `flutter build apk` to generate the Android installation file.
+4. Run `flutter build apk --profile` to generate the Android installation file.
+
+> **Warning:** Do not use the standard `flutter build apk` (Release mode) unless you configure ProGuard/R8 rules. The strict Android code shrinker will delete the native audio plugins, causing the app to crash on launch. The `--profile` flag bypasses this issue safely.
 
 ## For Developers: Data & Audio Sources
 * **Original Data Source:** The base Quranic text and structure was sourced from [quran-json by risan](https://github.com/risan/quran-json).
@@ -64,7 +66,7 @@ for i in range(1, 115):
     filename = f"{save_path}/{i}.mp3"
     
     # URL for Sheikh Mishary Rashid Alafasy (afs)
-    url = f"[https://server8.mp3quran.net/afs/](https://server8.mp3quran.net/afs/){surah_id_url}.mp3"
+    url = f"https://server8.mp3quran.net/afs/{surah_id_url}.mp3"
     
     print(f"Downloading Surah {i} from {url}...")
     
