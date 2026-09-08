@@ -13,7 +13,7 @@ This app was originally built as a personal project for my father and is now rel
 
 ## Getting the app (No Coding Required)
 If you just want to use the app without building it from source:
-1. **Download the APK:** Go to the [Releases]([LINK_TO_YOUR_GITHUB_RELEASES_PAGE]) page and download the latest `app-release.apk`.
+1. **Download the APK:** Go to the [Releases](https://github.com/SEK171/offline-quran-reader/releases/latest) page and download the latest `app-release.apk`.
 2. **Install:** Open the file on your Android device (you may need to allow "Install from Unknown Sources").
 3. **Audio Setup:** Follow the Audio Setup steps below to get the recitation files.
 
@@ -23,11 +23,12 @@ To keep this app completely offline and the download size small, the heavy audio
 >  **CRITICAL:** The verse-by-verse text highlighting timings (`quran_with_timings.json` included in this repository) were calibrated completely by hand specifically for the recitation of **Sheikh Mishary Rashid Alafasy**. You *must* use his audio files, otherwise the text highlighting will be out of sync.
 
 **Follow these steps:**
-1. **Download the Files:** * **Audio:** Download the recitation `.zip` [here](https://archive.org/details/2_20260413_20260413_1010).
-   * **App (Optional):** You can also find the ready-made APK [here]([LINK_TO_ARCHIVE_ORG_APK]) if you prefer not to use GitHub.
-2. **Extract the Files:** Unzip the downloaded file on your phone. You should now have a folder containing 114 `.mp3` files (one for each Surah).
-3. **Link to the App:** Open the app. It will ask you "Where are the audio files?". Click "Select Folder", grant storage permission, and select the folder you just unzipped. 
-*(Alternatively, long-press the Title Bar inside the app later to reset the folder and go through these steps again).*
+1. **Download the Files:**
+   * **Audio:** Download the recitation `.zip` [here](https://archive.org/details/2_20260413_20260413_1010).
+3. **Extract the Files:** Unzip the downloaded file on your phone. You should now have a folder containing 114 `.mp3` files (one for each Surah).
+4. **Link to the App:** Open the app. It will ask you "Where are the audio files?". Click "Select Folder", grant storage permission, and select the folder you just unzipped.
+
+**(Alternatively, long-press the Title Bar inside the app later to reset the folder and go through these steps again).**
 
 ## Building from Source
 If you want to compile the app yourself:
@@ -38,7 +39,7 @@ If you want to compile the app yourself:
 
 ## For Developers: Data & Audio Sources
 * **Original Data Source:** The base Quranic text and structure was sourced from [quran-json by risan](https://github.com/risan/quran-json).
-* **Calibrated Data:** The complete, hand-calibrated JSON file (`quran_with_timings.json`) is included in the `assets/json/` folder of this repository.
+* **Calibrated Data:** The complete, hand-calibrated JSON file (`quran.json`) is included in the `assets/json/` folder of this repository.
 
 If you want to fetch the exact audio files directly from the source server (mp3quran.net) instead of using the Archive.org link, here is the Python script used to grab the Mishary Alafasy files:
 
